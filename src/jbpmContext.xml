@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<!-- <bean id="hibernateLazyResolver" class="org.summerfragrance.support.hibernate3.HibernateLazyResolver">  
+		<property name="sessionFactory"><ref local="jbpmSessionFactory"/></property>  
+		</bean>-->
+
+	<bean id="dataSourceJbpm"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:mysql://localhost:3306/jbpmDb</value>
+		</property>
+		<property name="username" value="root" />
+		<property name="password" value="password" />
+	</bean>
+
+	<bean id="txManagerJbpm"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="jbpmSessionFactory" />
+	</bean>
+
+	<bean name="openSessionInViewInterceptor"
+		class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor"
+		autowire="byName" />
+	<!--<bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory" ref="jbpmSessionFactory" />
+		</bean> -->
+
+
+	<bean id="jbpmSessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSourceJbpm" />
+		<property name="mappingLocations">
+			<value>classpath:/org/jbpm/**/*.hbm.xml</value>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.cache.provider_class">
+					org.hibernate.cache.HashtableCacheProvider
+				</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="jbpmConfig"
+		class="org.springmodules.workflow.jbpm31.LocalJbpmConfigurationFactoryBean">
+		<property name="sessionFactory" ref="jbpmSessionFactory" />
+		<property name="configuration" value="classpath:/jbpm.cfg.xml" />
+		<property name="processDefinitions">
+			<list>
+				<ref local="receiveprisonerProcessDefinition" />
+			</list>
+		</property>
+		<property name="createSchema" value="false" />
+	</bean>
+
+	<bean id="receiveprisonerProcessDefinition"
+		class="org.springmodules.workflow.jbpm31.definition.ProcessDefinitionFactoryBean">
+		<property name="definitionLocation"
+			value="classpath:/receiveprisoner/processdefinition.xml" />
+	</bean>
+
+	<!-- Process DAO Hibernate support -->
+	<bean id="jbpmHibernateTemplate"
+		class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="jbpmSessionFactory" />
+	</bean>
+	<bean id="jbpmTemplate"
+		class="org.springmodules.workflow.jbpm31.JbpmTemplate">
+		<constructor-arg index="0" ref="jbpmConfig" />
+		<constructor-arg index="1"
+			ref="receiveprisonerProcessDefinition" />
+		<property name="hibernateTemplate" ref="jbpmHibernateTemplate" />
+	</bean>
+
+	<bean id="processJbpmDAOTarget"
+		class="ccp.rtd.jbpm.dao.ProcessJbpmDAO" autowire="byName">
+	</bean>
+
+	<bean id="processJbpmDAO"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="txManagerJbpm" />
+		<property name="target" ref="processJbpmDAOTarget" />
+		<property name="proxyTargetClass" value="true" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_NESTED</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>

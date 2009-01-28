@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  xmlns="urn:jbpm.org:jpdl-3.2"  name="receiveprisoner">
+
+
+	<swimlane name="officer"></swimlane>
+
+
+	<start-state name="start">
+		<transition to="createReceiveProfile"></transition>
+	</start-state>
+
+
+	<task-node name="createReceiveProfile">
+		
+		<task name="saveCreateReceivePrisoner" swimlane="officer"></task>
+		<transition to="isSpecialtype"></transition>
+	</task-node>
+
+	<decision name="isSpecialtype">
+		<handler class="ccp.rtd.jbpm.Handler.EvaluateTypeDecisionHandler"></handler>
+		<transition to="prisonerPersonalInfo" name="no"></transition>
+		<transition to="specialTypePrisoner" name="yes"></transition>
+	</decision>
+
+	<task-node name="prisonerPersonalInfo">
+		<task name="savePrisonerInfo" swimlane="officer"></task>
+		<transition to="fork"></transition>
+	</task-node>
+
+	<fork name="fork">
+		<transition to="prisonerRelativesInfo" name="toRelativeInfo"></transition>
+		<transition to="updateData" name="toUpdate"></transition>
+	</fork>
+
+	<join name="join">
+		<transition to="prisonerDoctorOpinions"></transition>
+	</join>
+
+	<task-node name="specialTypePrisoner">
+		<task name="saveSpecialTypePrisoner"></task>
+		<transition to="prisonerPersonalInfo"></transition>
+	</task-node>
+
+	<task-node name="prisonerRelativesInfo">
+		<task name="savePrisonerRelativesInfo"></task>
+		<transition to="join"></transition>
+	</task-node>
+
+	<task-node name="prisonerDoctorOpinions">
+		<task name="savePrisonerDoctorOpinions"></task>
+		<transition to="end"></transition>
+	</task-node>
+
+	<node name="updateData">
+		<action class="ccp.rtd.jbpm.Handler.UpdateDataHandler"></action>
+		<transition to="join"></transition>
+	</node>
+
+
+	<end-state name="end"></end-state>
+
+
+</process-definition>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="ccp.rtd.entities.Prisoner">
+  		<id name="prisonerID" column="PrisonerID" type="java.lang.Integer" >
+            <generator class="native" />
+        </id>
+        <property name="firstName" column="FirstName" type="string" length="100" not-null="true"/>
+        <property name="lastName" column="LastName" type="string" length="150" not-null="true"/>
+  		<many-to-one name="prisonerData" class="ccp.rtd.entities.PrisonerData" fetch="select">
+            <column name="CardID" length="30" />
+        </many-to-one>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="receiveprisoner" width="1028" height="595">
+  <node name="start" x="99" y="-8" width="120" height="33">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="createReceiveProfile" x="101" y="65" width="159" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="isSpecialtype" x="104" y="135" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="prisonerPersonalInfo" x="30" y="200" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="fork" x="121" y="261" width="122" height="24">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="join" x="52" y="379" width="252" height="24">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="specialTypePrisoner" x="216" y="202" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="prisonerRelativesInfo" x="28" y="314" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="prisonerDoctorOpinions" x="113" y="442" width="228" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="updateData" x="229" y="312" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="end" x="105" y="524" width="132" height="36"/>
+</root-container>

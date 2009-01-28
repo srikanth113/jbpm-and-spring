@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+      
+        <bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:mysql://localhost:3306/projectDb</value>
+		</property>
+		<property name="username" value="root" />
+		<property name="password" value="password" />
+		</bean>
+	
+        <bean id="prisonerDAO" class="ccp.rtd.dao.PrisonerDAO" >
+        	<property name="sessionFactory" ref="sessionFactory"/>
+        </bean>
+      
+        <bean id="prisonerDataDAO" class="ccp.rtd.dao.PrisonerDataDAO">
+       		<property name="sessionFactory" ref="sessionFactory"/>
+        </bean>
+        
+        <bean id="typePrisonerDAO" class="ccp.rtd.dao.TypePrisonerDAO">
+        	<property name="sessionFactory" ref="sessionFactory"/>
+        </bean>
+        
+         <bean id="prisonerHasTypeDAO" class="ccp.rtd.dao.PrisonerHasTypeDAO">
+        	<property name="sessionFactory" ref="sessionFactory"/>
+        </bean>
+        
+         <bean id="typeRelativeDAO" class="ccp.rtd.dao.TypeRelativeDAO">
+        	<property name="sessionFactory" ref="sessionFactory"/>
+        </bean>
+        
+         <bean id="prisonerRelativeDAO" class="ccp.rtd.dao.PrisonerRelativeDAO">
+        	<property name="sessionFactory" ref="sessionFactory"/>
+        </bean>
+        
+        <bean id="doctorDAO" class="ccp.rtd.dao.DoctorDAO">
+        	<property name="sessionFactory" ref="sessionFactory"/>
+        </bean>
+        
+        <bean id="healthDAO" class="ccp.rtd.dao.HealthDAO">
+        	<property name="sessionFactory" ref="sessionFactory"/>
+        </bean>
+        
+         <bean id="typeSicknessDAO" class="ccp.rtd.dao.TypeSicknessDAO">
+        	<property name="sessionFactory" ref="sessionFactory"/>
+        </bean>
+        
+        <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+       		<property name="dataSource">
+       			<ref bean="dataSource"/>
+       		</property>
+       		<property name="hibernateProperties">
+       			<props>
+       				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+       				<!-- <prop key="hibernate.hbm2ddl.auto">create</prop>  -->
+       				<prop key="hibernate.hbm2ddl.auto">update</prop>
+       				<prop key="hibernate.show_sql">true</prop>
+       				<prop key="hibernate.format_sql">true</prop>
+       			</props>
+       		</property>
+       		<property name="mappingResources">
+       			<list>
+       				<value>ccp/rtd/entities/PrisonerData.hbm.xml</value>
+       				<value>ccp/rtd/entities/Prisoner.hbm.xml</value>
+       				<value>ccp/rtd/entities/TypePrisoner.hbm.xml</value>
+       				<value>ccp/rtd/entities/PrisonerHasType.hbm.xml</value>
+       				<value>ccp/rtd/entities/PrisonerRelative.hbm.xml</value>
+       				<value>ccp/rtd/entities/TypeRelative.hbm.xml</value>
+       				<value>ccp/rtd/entities/Doctor.hbm.xml</value>
+       				<value>ccp/rtd/entities/Health.hbm.xml</value>
+       				<value>ccp/rtd/entities/TypeSickness.hbm.xml</value>
+       			</list>
+       		</property>
+       </bean>
+       
+       <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+			<property name="sessionFactory" ref="sessionFactory" />
+	   </bean>
+	   
+       <!-- TRANSACTION CONFIGURATION-->
+       
+       <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+       	<property name="sessionFactory" ref="sessionFactory" />
+       </bean>
+       
+       <!-- automatically close session -->
+       <bean id="hibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor">
+       	<property name="sessionFactory">
+       		<ref local="sessionFactory"/>
+       	</property>
+       </bean>
+       
+       <!-- aop -->
+       <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+       	<property name="transactionManager" ref="transactionManager"/>
+       	<property name="transactionAttributes">
+       		<props>
+       			<prop key="save*">PROPAGATION_REQUIRED</prop>
+        		<prop key="add*">PROPAGATION_REQUIRED</prop>
+        		<prop key="remove*">PROPAGATION_REQUIRED</prop>
+       			<prop key="*">PROPAGATION_REQUIRED</prop>
+       		</props>
+       	</property>
+       </bean>
+       
+       <!-- <bean id="autoProxy" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+       	<property name="interceptorNames">
+       		<list>
+       			<value>transactionInterceptor</value>
+       			<value>hibernateInterceptor</value>
+       		</list>
+       	</property>
+       	<property name="beanNames">
+       		<list>
+       			<value>*DAO</value>
+       		</list>
+       	</property>
+       </bean>  -->
+       
+</beans>
