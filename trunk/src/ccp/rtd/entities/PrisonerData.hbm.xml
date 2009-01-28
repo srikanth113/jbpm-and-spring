@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="ccp.rtd.entities.PrisonerData">
+		<id name="prisonerDataID" type="string">
+			<column name="CardID" length="13" />
+			<generator class="assigned" />
+		</id>
+		<property name="realFirstName" column="RealFirstName"
+			type="string" length="100" not-null="true" />
+		<property name="realLastName" column="RealLastName"
+			type="string" length="150" not-null="true" />
+		<property name="sex" column="Sex"
+			type="string" length="150" />
+		<set name="prisoners" inverse="true">
+			<key>
+				<column name="CardID" length="13" />
+			</key>
+			<one-to-many class="ccp.rtd.entities.Prisoner" />
+		</set>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="ccp.rtd.entities.Health">
+  		<id name="healthID" column="HealthID" type="java.lang.Integer">
+           <generator class="native" />
+    	</id>
+    	<property name="healthDesc" column="HealthDesc" type="string"/>
+    	<property name="opinion" column="Opinion" type="string"/>
+    	<many-to-one name="doctor" class="ccp.rtd.entities.Doctor" fetch="select">
+            <column name="DoctorID"/>
+    	</many-to-one>
+    	<many-to-one name="typeSickness" class="ccp.rtd.entities.TypeSickness" fetch="select">
+            <column name="TypeSicknessID"/>
+    	</many-to-one>
+    	<many-to-one name="prisonerData" class="ccp.rtd.entities.PrisonerData" fetch="select">
+            <column name="CardID" length="13" />
+    	</many-to-one>    
+  </class>
+</hibernate-mapping>

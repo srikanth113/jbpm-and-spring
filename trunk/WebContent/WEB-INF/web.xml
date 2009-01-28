@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4"
+	xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>jBPMandSpring</display-name>
+
+	<!-- <servlet>
+		<servlet-name>ContextLoaderServlet</servlet-name>
+		<servlet-class>
+			org.springframework.web.context.ContextLoaderServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>  -->
+
+
+
+	<!--<filter>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<filter-class>
+			org.springframework.orm.hibernate3.support.OpenSessionInViewFilter
+		</filter-class>
+		<init-param>
+			<param-name>singleSession</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping> -->
+
+
+
+	<servlet>
+		<description></description>
+		<display-name>PrisonerReceiveController</display-name>
+		<servlet-name>PrisonerReceiveController</servlet-name>
+		<servlet-class>
+			ccp.rtd.controllers.PrisonerReceiveController
+		</servlet-class>
+	</servlet>
+	<servlet>
+		<description></description>
+		<display-name>SearchByProcessInstaceIdController</display-name>
+		<servlet-name>SearchByProcessInstaceIdController</servlet-name>
+		<servlet-class>
+			ccp.rtd.controllers.SearchByProcessInstaceIdController
+		</servlet-class>
+	</servlet>
+	<servlet>
+		<description></description>
+		<display-name>PrisonerInfoController</display-name>
+		<servlet-name>PrisonerInfoController</servlet-name>
+		<servlet-class>
+			ccp.rtd.controllers.PrisonerInfoController
+		</servlet-class>
+	</servlet>
+	<servlet>
+		<description></description>
+		<display-name>PrisonerSpecialTypeController</display-name>
+		<servlet-name>PrisonerSpecialTypeController</servlet-name>
+		<servlet-class>
+			ccp.rtd.controllers.PrisonerSpecialTypeController
+		</servlet-class>
+	</servlet>
+	<servlet>
+		<description></description>
+		<display-name>PrisonerRelativesInfoController</display-name>
+		<servlet-name>PrisonerRelativesInfoController</servlet-name>
+		<servlet-class>
+			ccp.rtd.controllers.PrisonerRelativesInfoController
+		</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<description>
+		</description>
+		<display-name>
+		PrisonerDoctorOpinionsController</display-name>
+		<servlet-name>PrisonerDoctorOpinionsController</servlet-name>
+		<servlet-class>
+		ccp.rtd.controllers.PrisonerDoctorOpinionsController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PrisonerReceiveController</servlet-name>
+		<url-pattern>/PrisonerReceiveController</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SearchByProcessInstaceIdController</servlet-name>
+		<url-pattern>/SearchByProcessInstaceIdController</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PrisonerInfoController</servlet-name>
+		<url-pattern>/PrisonerInfoController</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PrisonerSpecialTypeController</servlet-name>
+		<url-pattern>/PrisonerSpecialTypeController</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PrisonerRelativesInfoController</servlet-name>
+		<url-pattern>/PrisonerRelativesInfoController</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>PrisonerDoctorOpinionsController</servlet-name>
+		<url-pattern>/PrisonerDoctorOpinionsController</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>
